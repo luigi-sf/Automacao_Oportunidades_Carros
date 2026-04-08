@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: car-opportunity-finder
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python app/main.py   # ← ADICIONEI "app/"
+    
+  scheduler:
+    build: .
+    container_name: car-scheduler
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    command: sh -c "while true; do python app/main.py; sleep 21600; done"  # ← ADICIONEI "app/"
